@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Data;
+use App\Mail\Email;
+use Illuminate\Support\Facades\Mail;
 
 class DataController extends Controller
 {
@@ -11,6 +14,39 @@ class DataController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function saveLink(Request $request)
+    {
+        $add= new Data([
+            'link' => $request->get('link')
+        ]);
+        $add->save();
+    }
+
+    public function deleteLink(Request $request)
+    {
+        $remove= Data::find($request->get('id'));
+        $remove->delete();
+    }
+
+    public function sendData(Request $request)
+    {
+        $linki = Data::all();
+        $odpowiedz = '';
+        foreach($linki as $klucz => $link){
+	    $odpowiedz .= simplexml_load_file($link);
+    }
+
+    $dane = [
+	'email' => $request->get('email'),
+	'odpowiedz' => $odpowiedz
+];
+
+Mail::to($email)->send(new Email($dane));   
+    }
+
+    
+
     public function index()
     {
         //

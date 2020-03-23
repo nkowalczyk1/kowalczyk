@@ -23,6 +23,7 @@ class Email extends Mailable
     {
         $subject = 'Temacik';
         $name = 'Nazwa';
+        $address = $this->data['email'];
         
         return $this->view('emails.email')
                     ->from($address, $name)
@@ -32,21 +33,4 @@ class Email extends Mailable
                     ->subject($subject)
                     ->with([ 'wiadomosc' => $this->data['odpowiedz'] ]);
     }
-
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    
 }

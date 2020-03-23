@@ -15,6 +15,10 @@ class DataController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function loadLinks(){
+        return json_encode(Data::all());
+    }
+
     public function saveLink(Request $request)
     {
         $add= new Data([
@@ -34,18 +38,22 @@ class DataController extends Controller
         $linki = Data::all();
         $odpowiedz = '';
         foreach($linki as $klucz => $link){
-	    $odpowiedz .= simplexml_load_file($link);
+            try{
+                $odpowedz .= simplexml_load_file($link);
+            }catch(Exception $e){
+            }
+        }
+        $dane = [
+            'email' => $request->get('email'),
+            'odpowiedz' => $odpowiedz
+        ];
+        try{
+            Mail::to($request->get('email'))->send(new Email($dane));
+        }catch(Exception $e){
+
+        }
+        return $odpowiedz;
     }
-
-    $dane = [
-	'email' => $request->get('email'),
-	'odpowiedz' => $odpowiedz
-];
-
-Mail::to($email)->send(new Email($dane));   
-    }
-
-    
 
     public function index()
     {

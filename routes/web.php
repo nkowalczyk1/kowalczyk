@@ -16,5 +16,6 @@ Route::get('/', function () {
 });
 
 Route::post('saveLink','DataController@saveLink');
-Route::post('saveLink','DataController@saveLink');
+Route::post('deleteLink','DataController@deleteLink');
 Route::post('sendData','DataController@sendData');
+Route::get('loadLinks','DataController@loadLinks');
